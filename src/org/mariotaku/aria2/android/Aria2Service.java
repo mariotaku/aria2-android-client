@@ -12,7 +12,7 @@ import android.os.IBinder;
 public class Aria2Service extends Service implements Constants {
 
 	private IBinder mBinder = new ServiceStub(this);
-	private Aria2CommandWrapper mAria2 = new Aria2CommandWrapper();
+	private Aria2API mAria2 = new Aria2API();
 
 	@Override
 	public void onCreate() {
@@ -41,7 +41,7 @@ public class Aria2Service extends Service implements Constants {
 			@Override
 			public void run() {
 				if (!isAria2Running()) {
-					exec("aria2c --enable-rpc --rpc-listen-all");
+					exec("aria2c --enable-rpc --log=/sdcard/aria2.log --log-level=info");
 				}
 			}
 		}.start();
