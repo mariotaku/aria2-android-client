@@ -23,10 +23,10 @@
 			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 		<TextView
-			android:id="@+id/global_stats"
+			android:id="@+id/status"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="Global stats"
+			android:text="Status"
 			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 		<TextView

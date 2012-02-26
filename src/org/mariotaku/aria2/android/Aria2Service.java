@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 
+import org.mariotaku.aria2.Aria2API;
+
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 
 public class Aria2Service extends Service implements Constants {
 
 	private IBinder mBinder = new ServiceStub(this);
-	private Aria2API mAria2 = new Aria2API();
+	private Aria2API aria2 = new Aria2API();
 
 	@Override
 	public void onCreate() {
@@ -41,7 +45,7 @@ public class Aria2Service extends Service implements Constants {
 			@Override
 			public void run() {
 				if (!isAria2Running()) {
-					exec("aria2c --enable-rpc --log=/sdcard/aria2.log --log-level=info");
+					exec("aria2c --enable-rpc");
 				}
 			}
 		}.start();
@@ -50,7 +54,7 @@ public class Aria2Service extends Service implements Constants {
 
 	public void stopAria2() {
 		if (isAria2Running()) {
-			mAria2.shutdown();
+			aria2.shutdown();
 		}
 	}
 

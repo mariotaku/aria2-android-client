@@ -3,9 +3,13 @@
  *
  */
 
-package org.mariotaku.aria2.android;
+package org.mariotaku.aria2.android.utils;
 
 import java.util.HashMap;
+
+import org.mariotaku.aria2.android.Aria2Service;
+import org.mariotaku.aria2.android.IAria2Service;
+import org.mariotaku.aria2.android.IAria2Service.Stub;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package org.mariotaku.aria2.android;
+package org.mariotaku.aria2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -9,6 +9,8 @@ import java.util.Set;
 public class CommonItem {
 
 	public Object getRaw(String name) {
+
+		if (name == null) return null;
 
 		name = name.replaceAll("_", "-");
 		if ("continue-download".equals(name)) name = "continue";
@@ -30,6 +32,7 @@ public class CommonItem {
 	}
 
 	public void init(HashMap<String, Object> data) {
+		if (data == null) data = new HashMap<String, Object>();
 		Set<String> keys = data.keySet();
 
 		for (String key : keys) {
@@ -38,6 +41,7 @@ public class CommonItem {
 	}
 
 	public void init(String[] values) {
+		if (values == null) values = new String[] {};
 		Field[] fields = getClass().getFields();
 		try {
 			for (String value : values) {

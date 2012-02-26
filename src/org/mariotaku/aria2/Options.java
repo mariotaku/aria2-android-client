@@ -1,4 +1,4 @@
-package org.mariotaku.aria2.android;
+package org.mariotaku.aria2;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

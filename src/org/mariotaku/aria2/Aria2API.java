@@ -1,4 +1,4 @@
-package org.mariotaku.aria2.android;
+package org.mariotaku.aria2;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -96,9 +96,53 @@ public class Aria2API {
 	}
 
 	/**
-	 * This method shutdowns aria2. This method behaves like aria2.shutdown
-	 * except that any actions which takes time such as contacting BitTorrent
-	 * tracker are skipped.
+	 * Pauses the download denoted by gid. This method behaves just like
+	 * {@link #pause(int)} except that this method pauses download without any
+	 * action which takes time such as contacting BitTorrent tracker.
+	 * 
+	 * @return GID of paused download.
+	 */
+	public int forcePause(int gid) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+
+		Object result = callMethod("aria2.forcePause", String.valueOf(gid));
+
+		if (result == null) return -1;
+
+		return Integer.parseInt((String) result);
+	}
+
+	/**
+	 * This method is equal to calling {@link #forcePause(int)} for every
+	 * active/waiting download.
+	 * 
+	 * @return "OK" if succeed.
+	 */
+	public String forcePauseAll() {
+		return (String) callMethod("aria2.forcePauseAll");
+	}
+
+	/**
+	 * Removes the download denoted by gid. This method behaves just like
+	 * {@link #remove(int)} except that this method removes download without any
+	 * action which takes time such as contacting BitTorrent tracker.
+	 * 
+	 * @return GID of removed download.
+	 */
+	public int forceRemove(int gid) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+
+		Object result = callMethod("aria2.forceRemove", String.valueOf(gid));
+
+		if (result == null) return -1;
+
+		return Integer.parseInt((String) result);
+	}
+
+	/**
+	 * Shutdowns aria2. It behaves like {@link #shutdown()} except that any
+	 * actions which takes time such as contacting BitTorrent tracker are
+	 * skipped.
 	 * 
 	 * @return "OK" if succeed.
 	 */
@@ -130,6 +174,52 @@ public class Aria2API {
 	}
 
 	/**
+	 * Pauses the download denoted by gid. The status of paused download becomes
+	 * "paused". If the download is active, the download is placed on the first
+	 * position of waiting queue. As long as the status is "paused", the
+	 * download is not started. To change status to "waiting", use {@link
+	 * unpause(int)} method.
+	 * 
+	 * @return GID of paused download.
+	 */
+	public int pause(int gid) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+
+		Object result = callMethod("aria2.pause", String.valueOf(gid));
+
+		if (result == null) return -1;
+
+		return Integer.parseInt((String) result);
+	}
+
+	/**
+	 * This method is equal to calling {@link #pause(int)} for every
+	 * active/waiting download.
+	 * 
+	 * @return "OK" if succeed.
+	 */
+	public String pauseAll() {
+		return (String) callMethod("aria2.pauseAll");
+	}
+
+	/**
+	 * Removes the download denoted by gid. If specified download is in
+	 * progress, it is stopped at first. The status of removed download becomes
+	 * "removed".
+	 * 
+	 * @return GID of removed download.
+	 */
+	public int remove(int gid) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+
+		Object result = callMethod("aria2.remove", String.valueOf(gid));
+
+		if (result == null) return -1;
+
+		return Integer.parseInt((String) result);
+	}
+
+	/**
 	 * Removes completed/error/removed download denoted by gid from memory.
 	 * 
 	 * @return "OK" if succeed.
@@ -146,6 +236,53 @@ public class Aria2API {
 	public String shutdown() {
 
 		return (String) callMethod("aria2.shutdown");
+	}
+
+	/**
+	 * This method returns download progress of the download denoted by gid. If
+	 * it is specified, the response contains only keys in keys array. If keys
+	 * is empty or not specified, the response contains all keys. This is useful
+	 * when you just want specific keys and avoid unnecessary transfers. For
+	 * example, {@code tellStatus(1, "gid", "status");} returns
+	 * {@link Status#gid} and {@link Status#status} key.
+	 * 
+	 * @return {@link Status}
+	 */
+	public Status tellStatus(int gid, String... keys) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+		Status status = null;
+
+		callMethod("aria2.tellStatus", String.valueOf(gid), keys);
+
+		if (keys != null && keys.length > 0)
+		/* return callMethod("aria2.tellStatus", new Object[]{keys,}) */;
+		return status;
+	}
+
+	/**
+	 * Changes the status of the download denoted by gid from "paused" to
+	 * "waiting". This makes the download eligible to restart.
+	 * 
+	 * @return GID of unpaused download.
+	 */
+	public int unpause(int gid) {
+		if (gid < 0) throw new IllegalArgumentException("gid can't be a negative value!");
+
+		Object result = callMethod("aria2.unpause", String.valueOf(gid));
+
+		if (result == null) return -1;
+
+		return Integer.parseInt((String) result);
+	}
+
+	/**
+	 * This method is equal to calling {@link #unpause(int)} for every
+	 * active/waiting download.
+	 * 
+	 * @return "OK" if succeed.
+	 */
+	public String unpauseAll() {
+		return (String) callMethod("aria2.unpauseAll");
 	}
 
 	private Object callMethod(String method, Object... args) {

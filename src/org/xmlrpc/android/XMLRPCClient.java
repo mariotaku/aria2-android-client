@@ -267,6 +267,7 @@ public class XMLRPCClient extends XMLRPCCommon {
 		entity = response.getEntity();
 		Reader reader = new InputStreamReader(new BufferedInputStream(entity.getContent()));
 		pullParser.setInput(reader);
+		
 		// lets start pulling...
 		pullParser.nextTag();
 		pullParser.require(XmlPullParser.START_TAG, null, Tag.METHOD_RESPONSE);

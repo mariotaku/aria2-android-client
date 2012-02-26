@@ -3,7 +3,7 @@
  *
  */
 
-package org.mariotaku.aria2.android;
+package org.mariotaku.aria2.android.utils;
 
 import android.content.ContextWrapper;
 
